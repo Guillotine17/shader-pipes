@@ -1,7 +1,7 @@
 precision mediump float;
  
 // our texture
-uniform sampler2D u_image;
+uniform sampler2D u_texture;
 uniform vec2 u_textureSize;
 
 // the texCoords passed in from the vertex shader.
@@ -31,5 +31,6 @@ void main()
     float chromo_x = 0.2;
     float chromo_y = 0.2;
     // output
-    gl_FragColor = vec4(texture2D(u_image, vec2(uv.x - chromo_x*0.016, uv.y - chromo_y*0.009)).r, texture2D(u_image, vec2(uv.x + chromo_x*0.0125, uv.y - chromo_y*0.004)).g, texture2D(u_image, vec2(uv.x - chromo_x*0.0045, uv.y + chromo_y*0.0085)).b, 1.0);
+    gl_FragColor = vec4(texture2D(u_texture, vec2(uv.x - chromo_x*0.016, uv.y - chromo_y*0.009)).r, texture2D(u_texture, vec2(uv.x + chromo_x*0.0125, uv.y - chromo_y*0.004)).g, texture2D(u_texture, vec2(uv.x - chromo_x*0.0045, uv.y + chromo_y*0.0085)).b, 1.0);
+    // gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
 }

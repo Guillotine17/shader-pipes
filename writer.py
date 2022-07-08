@@ -27,12 +27,12 @@ def read_image_workaround(path):
     return cv2.cvtColor(im_tmp, cv2.COLOR_BGR2RGBA)
 
 if sys.argv[1] == 'webcam':
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(0)
     # 2560x720
     # 640x240
     cap.set(cv2.CAP_PROP_FPS, 60)
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 2650)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+    # cap.set(cv2.CAP_PROP_FRAME_WIDTH, 2650)
+    # cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
     # Check if the webcam is opened correctly
     if not cap.isOpened():
         raise IOError("Cannot open webcam")
@@ -50,7 +50,7 @@ if sys.argv[1] == 'webcam':
         sendFrame(cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA))
         # cv2.imshow('Input', frame)
         # frameCount += 1
-        # if frameCount > 1000:
+        # if frameCount > 2:
         #     break
 
     cap.release()

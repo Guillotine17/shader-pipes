@@ -15,6 +15,9 @@ var program = utils.createProgramFromSources(gl, [utils.defaultVertexSrc, fragSh
 var texCoordLocation = gl.getAttribLocation(program, "a_texCoord");
 var positionLocation = gl.getAttribLocation(program, "a_position");
 var textureSizeLocation = gl.getUniformLocation(program, "u_textureSize");
+if (fragShaderName !== 'default') {
+    fragShader = fs.readFileSync(`shaders/${fragShaderName}`, 'utf8')
+}
 function setShape(w, h) {
     shape.w = w;
     shape.h = h;
@@ -24,23 +27,18 @@ function setShape(w, h) {
     positionLocation = gl.getAttribLocation(program, "a_position");
     textureSizeLocation = gl.getUniformLocation(program, "u_textureSize");
 }
-if (fragShaderName !== 'default') {
-    fragShader = fs.readFileSync(`shaders/${fragShaderName}`, 'utf8')
-}
 async function main(imageData) {
     // const inputFile = myArgs.length ? myArgs.at(-1) :'./in.png'
     const {h , w} = shape;
     render2(imageData, w, h, fragShader)
 }
-function glSetup() {
-    
-}
+
 function render2(imageData, w, h, fragShader=utils.defaultFragSrc) {
 
 
     var positionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-    setRectangle(gl, 0, 0, w, h);
+    utils.setRectangle(gl, 0, 0, w, h);
 
     // provide texture coordinates for the rectangle.
     var texCoordBuffer = gl.createBuffer();
@@ -67,6 +65,9 @@ function render2(imageData, w, h, fragShader=utils.defaultFragSrc) {
 
     // Upload the image into the texture.
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, imageData);
+    var texture_location = gl.getUniformLocation(program, "u_texture");
+    // gl.uniform1i(resolutionLocation, w, h);
+
 
     // lookup uniforms
     var resolutionLocation = gl.getUniformLocation(program, "u_resolution");
@@ -123,21 +124,6 @@ function render2(imageData, w, h, fragShader=utils.defaultFragSrc) {
 
     // utils.bufferToFile(gl, w, h, `output/render_out${message_count}.ppm`)
     utils.bufferToStdout(gl, w, h)
-}
-
-function setRectangle(gl, x, y, width, height) {
-    var x1 = x;
-    var x2 = x + width;
-    var y1 = y;
-    var y2 = y + height;
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-        x1, y1,
-        x2, y1,
-        x1, y2,
-        x1, y2,
-        x2, y1,
-        x2, y2,
-    ]), gl.STATIC_DRAW);
 }
 
 async function createReader(){
